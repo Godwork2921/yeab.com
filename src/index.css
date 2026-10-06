@@ -1,0 +1,417 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+@theme {
+  /* Surfaces — near-black chassis with three elevation levels */
+  --color-bg: #05070a;
+  --color-bg-raise: #0b1017;
+  --color-bg-high: #111823;
+  --color-bg-line: #1c2531;
+
+  /* Type */
+  --color-ink: #f2f5f9;
+  --color-ink-dim: #b6c0cf;
+  --color-muted: #7d8899;
+  --color-faint: #4c5768;
+
+  /* Single primary accent + a strict "signal" secondary */
+  --color-accent: #7c6cff;
+  --color-accent-soft: #a99bff;
+  --color-accent-deep: #4a35d6;
+  --color-signal: #5fe3c0;
+
+  /* Fonts */
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
+
+  /* Motion — expo-out family, the house easing */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --radius-panel: 1.25rem;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  html {
+    background-color: var(--color-bg);
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  /* The page owns the scroll — locks are applied via a body class */
+  body.is-locked {
+    overflow: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 0.94;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-accent) 40%, transparent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-soft);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-bg-line) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-bg-line);
+    border-radius: 99px;
+    border: 3px solid var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #2a3646;
+  }
+
+  svg {
+    display: block;
+  }
+
+  /* The nav floats over the content — anchor targets must clear it. */
+  section[id] {
+    scroll-margin-top: 7rem;
+  }
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+@utility shell {
+  width: 100%;
+  max-width: 84rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 2.5rem;
+  }
+  @media (width >= 80rem) {
+    padding-inline: 3.5rem;
+  }
+}
+
+/* Mono micro-label used for every section index + technical chip */
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+@utility glass {
+  background-color: color-mix(in oklab, var(--color-bg-raise) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+@utility text-accent-grad {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-ink) 0%,
+    var(--color-accent-soft) 42%,
+    var(--color-accent) 68%,
+    var(--color-ink) 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hero secondary line — hairline outline, deliberately quieter than line one */
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(242 245 249 / 0.34);
+}
+
+/* Accent gradient with a slow sheen — gradient *movement*, not decoration */
+@utility text-accent-sheen {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-accent-soft) 0%,
+    var(--color-ink) 38%,
+    var(--color-accent) 62%,
+    var(--color-accent-soft) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-sheen 11s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* ============================================================
+   FX LAYERS
+   ============================================================ */
+.fx-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-bg-line) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-bg-line) 55%, transparent) 1px, transparent 1px);
+  background-size: 88px 88px;
+}
+
+.fx-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+.fx-vignette {
+  background:
+    radial-gradient(120% 90% at 50% 0%, transparent 40%, var(--color-bg) 100%),
+    radial-gradient(90% 70% at 50% 50%, transparent 55%, color-mix(in oklab, var(--color-bg) 85%, transparent) 100%);
+}
+
+/* Animated hairline border for featured panels (conic sweep) */
+.border-spin {
+  position: relative;
+  isolation: isolate;
+}
+.border-spin::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--spin-angle, 0deg),
+    transparent 0deg,
+    color-mix(in oklab, var(--color-accent) 65%, transparent) 70deg,
+    transparent 150deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-expo);
+  z-index: -1;
+}
+.border-spin[data-active='true']::before {
+  opacity: 1;
+  animation: spin-sweep 4.5s linear infinite;
+}
+
+@property --spin-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes spin-sweep {
+  to {
+    --spin-angle: 360deg;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.85;
+  }
+  70% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  95% {
+    opacity: 0.15;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(-4%, -2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, 3%, 0) scale(1.14);
+  }
+  100% {
+    transform: translate3d(-4%, -2%, 0) scale(1);
+  }
+}
+
+@keyframes shine-sweep {
+  0% {
+    transform: translate3d(-120%, 0, 0) skewX(-18deg);
+  }
+  100% {
+    transform: translate3d(220%, 0, 0) skewX(-18deg);
+  }
+}
+
+@keyframes dash-run {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes scan-y {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  12%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(1000%);
+    opacity: 0;
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+@keyframes text-sheen {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 220% 50%;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION — collapse to opacity/state changes only
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .border-spin::before {
+    display: none;
+  }
+
+  .text-accent-sheen {
+    animation: none;
+    background-position: 40% 50%;
+  }
+}
