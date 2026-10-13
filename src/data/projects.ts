@@ -71,8 +71,7 @@ export const projects: Project[] = [
       ],
     },
     links: [
-      { label: 'GitHub', href: 'https://github.com/Godwork2921' },
-      { label: 'Write-up', href: 'https://github.com/Godwork2921' },
+      { label: 'GitHub', href: 'https://github.com/Godwork2921/EAII-Internship-MT-Project' },
     ],
   },
   {
@@ -132,8 +131,8 @@ export const projects: Project[] = [
       ],
     },
     links: [
-      { label: 'GitHub', href: 'https://github.com/Godwork2921' },
-      { label: 'Architecture', href: 'https://github.com/Godwork2921' },
+      { label: 'GitHub', href: 'https://github.com/Godwork2921/microservice-ticketing-system' },
+      { label: 'Architecture', href: 'https://github.com/Godwork2921/microservice-ticketing-system' },
     ],
   },
   {
@@ -179,8 +178,7 @@ export const projects: Project[] = [
       ],
     },
     links: [
-      { label: 'Product', href: 'https://github.com/Godwork2921' },
-      { label: 'GitHub', href: 'https://github.com/Godwork2921' },
+      { label: 'GitHub', href: 'https://github.com/Godwork2921/Hie-emien' },
     ],
   },
   {
@@ -230,7 +228,7 @@ export const projects: Project[] = [
         'The signal is rarely in the label you have — it is in the behaviour you can already see.',
       ],
     },
-    links: [{ label: 'GitHub', href: 'https://github.com/Godwork2921' }],
+    links: [{ label: 'GitHub', href: 'https://github.com/Godwork2921/roadguard-ai' }],
   },
   {
     id: 'negarit-ai',
@@ -280,6 +278,6 @@ export const projects: Project[] = [
         'Security tooling fails on legibility long before it fails on capability; the explanation is part of the feature.',
       ],
     },
-    links: [{ label: 'GitHub', href: 'https://github.com/Godwork2921' }],
+    links: [{ label: 'GitHub', href: 'https://github.com/Godwork2921/Negarit-AI' }],
   },
 ]
